@@ -3,22 +3,26 @@
 #include <stdexcept>
 #include <iostream>
 
-#include "LocalBackuper.h"
+#include "LocalDirBackuper.h"
 #include "InotifyChecker.h"
 
-using namespace NFileWatcher;
+#include "boost/filesystem.hpp"
 
 #define TIMEOUT_MS 100
 
-TTask::TTask(const std::string &path) {
-    if(path.empty()) {
-        throw std::runtime_error("Path is empty");
-    }
+using namespace NFileWatcher;
 
-    Backuper = std::make_unique<TLocalBackuper>();
+TTask::TTask(const std::string &path) {
+    if(path.empty())
+        throw std::runtime_error("Path is empty");
+
+    if(!boost::filesystem::exists(path))
+        throw std::runtime_error("Target file " + path + " not exists");
+
+    Backuper = std::make_unique<TLocalDirBackuper>();
     Checker = std::make_unique<TInotifyChecker>();
 
-    Path = path;
+    Path =  boost::filesystem::absolute(path).string();
     std::cout <<"Add monitoring file: " << Path << std::endl;
 }
 
@@ -45,9 +49,9 @@ void NFileWatcher::TTask::Run() {
                         );
             }
             if(Running && modified) {
-                std::cout << "File " + Path + " was modified!" << std::endl;
+                std::cout << "File " + Path + " was modified." << std::endl;
                 Backuper->Backup();
-                std::cout << "The file was restored from backup" << std::endl;
+                std::cout << "File " + Path +  " was restored from backup." << std::endl;
             }
         }
     });

@@ -12,7 +12,7 @@ set(
         src/Configurator.h
         src/Task.h
         src/InotifyChecker.h
-        src/LocalBackuper.h
+        src/LocalDirBackuper.h
 )
 
 set(
@@ -20,7 +20,7 @@ set(
         src/Configurator.cpp
         src/Task.cpp
         src/InotifyChecker.cpp
-        src/LocalBackuper.cpp
+        src/LocalDirBackuper.cpp
         main.cpp
 )
 
@@ -32,7 +32,6 @@ target_link_libraries(
         PUBLIC
         Boost::program_options
         Boost::filesystem
-        PubSub
         Checker
         Backuper
         Process

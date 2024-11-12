@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
         ProcManager->Join();
     }
     catch (const std::exception &exc) {
-        std::cout << "Error:\t" << exc.what() << std::endl;
+        std::cerr << "Error:\t" << exc.what() << std::endl;
     }
     return 0;
 }

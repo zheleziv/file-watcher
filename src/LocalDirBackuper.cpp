@@ -1,13 +1,14 @@
+#include "LocalDirBackuper.h"
+
 #include <iostream>
-#include "LocalBackuper.h"
 
 #include "boost/filesystem.hpp"
 
-#define SAVE_DIR "./backup/"
+#define SAVE_DIR "backup"
 
 using namespace NFileWatcher;
 
-void TLocalBackuper::Backup() {
+void TLocalDirBackuper::Backup() {
     if(!boost::filesystem::exists(SavePath))
         throw std::runtime_error("Backup file " + SavePath + " not exists");
 
@@ -17,7 +18,7 @@ void TLocalBackuper::Backup() {
     boost::filesystem::copy(SavePath, TargetPath);
 }
 
-void TLocalBackuper::Save(const std::string &path) {
+void TLocalDirBackuper::Save(const std::string &path) {
     if(!boost::filesystem::exists(path))
         throw std::runtime_error("Target file " + path + " not exists");
 
@@ -25,7 +26,7 @@ void TLocalBackuper::Save(const std::string &path) {
         if(!boost::filesystem::create_directory(SAVE_DIR))
             throw std::runtime_error("Cannot create backup directory: " SAVE_DIR);
 
-    auto savePath = SAVE_DIR + boost::filesystem::path(path).filename().string();
+    auto savePath = SAVE_DIR "/" + boost::filesystem::path(path).filename().string();
 
     if(boost::filesystem::exists(savePath))
         boost::filesystem::remove(savePath);
@@ -36,7 +37,7 @@ void TLocalBackuper::Save(const std::string &path) {
     SavePath = savePath;
 }
 
-TLocalBackuper::~TLocalBackuper() {
+TLocalDirBackuper::~TLocalDirBackuper() {
     std::cout << "Deleting backup: " << SavePath << std::endl;
     if(boost::filesystem::exists(SavePath))
         boost::filesystem::remove(SavePath);

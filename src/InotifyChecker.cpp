@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 #include <sys/poll.h>
-#include "sys/inotify.h"
+#include <sys/inotify.h>
 
 
 #define MAX_EVENTS 1

@@ -9,5 +9,5 @@ set(
         include/Backuper/Interface.h
 )
 
-add_library(Backuper INTERFACE ${HEADER_FILES} )
+add_library(Backuper INTERFACE)
 target_include_directories(Backuper INTERFACE include)

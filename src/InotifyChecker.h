@@ -4,11 +4,18 @@
 
 namespace NFileWatcher {
     struct TInotifyChecker final: public NChecker::Interface {
+
+        /**
+         * @brief Инициализация дескриптора мониторинга состояния файла
+         */
         void Init(
                 const std::string& path,
                 NChecker::EEvent event
         ) noexcept(false) final;
 
+        /**
+         * @brief Non-blocking проверка состояния файла
+         */
         bool Check() noexcept final;
 
         ~TInotifyChecker() override;

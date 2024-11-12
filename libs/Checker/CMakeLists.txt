@@ -9,5 +9,5 @@ set(
         include/Checker/Interface.h
 )
 
-add_library(Checker INTERFACE ${HEADER_FILES} )
+add_library(Checker INTERFACE )
 target_include_directories(Checker INTERFACE include)
