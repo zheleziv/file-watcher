@@ -5,24 +5,36 @@ project(
         VERSION 1.0.0
 )
 
-include(cmake/Dependencies.cmake)
+add_subdirectory(libs)
 
 set(
         HEADER_FILES
-
+        src/Configurator.h
+        src/Task.h
+        src/InotifyChecker.h
+        src/LocalBackuper.h
 )
 
 set(
         SOURCE_FILES
-        src/main.cpp
-
+        src/Configurator.cpp
+        src/Task.cpp
+        src/InotifyChecker.cpp
+        src/LocalBackuper.cpp
+        main.cpp
 )
 
 add_executable(FileWatcher ${HEADER_FILES} ${SOURCE_FILES})
 
-find_package(Boost)
-if (NOT ${Boost_FOUND})
-    message(WARNING "Необходимо установить Boost (--target Boost или через пакетный менеджер, после чего перезапустить cmake)")
-elseif ()
-    target_link_libraries(FileWatcher PUBLIC Boost::Boost Boost::program_options)
-endif ()
+find_package(Boost REQUIRED COMPONENTS program_options filesystem)
+target_link_libraries(
+        FileWatcher
+        PUBLIC
+        Boost::program_options
+        Boost::filesystem
+        PubSub
+        Checker
+        Backuper
+        Process
+        pthread
+)
